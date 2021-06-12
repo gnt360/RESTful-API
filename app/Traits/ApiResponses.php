@@ -28,13 +28,12 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    protected function notFoundResponse( $message = null, $data = null, $statusCode = 404)
+    protected function notFoundResponse( $message = null, $statusCode = 404)
     {
         return response([
             'statusCode' => $statusCode,
             'status' => 'not_found',
             'message' => $message,
-            'data' => $data,
         ])->setStatusCode($statusCode);
     }
 
@@ -86,20 +85,6 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    // /**
-    //  * a generic method for all error
-    //  * messages
-    //  * @param $message
-    //  * @param int $statusCode
-    //  * @return Application|ResponseFactory|Response|object
-    //  */
-    // protected function serverErrorResponse($message, $statusCode = 500)
-    // {
-    //     return response([
-    //         'statusCode' => $statusCode,
-    //         'status' => 'error',
-    //         'message' => $message
-    //     ])->setStatusCode($statusCode);
-    // }
+    
 
 }
