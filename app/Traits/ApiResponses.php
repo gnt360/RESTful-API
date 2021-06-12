@@ -67,13 +67,12 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    protected function noContentResponse( $message = null, $data = null, $statusCode = 204)
+    protected function noContentResponse( $message = null, $statusCode = 204)
     {
         return response([
             'statusCode' => $statusCode,
             'status' => 'no_content',
             'message' => $message,
-            'data' => $data,
         ])->setStatusCode($statusCode);
     }
 
