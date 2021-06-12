@@ -38,13 +38,12 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    protected function unauthenticatedResponse( $message = null, $data = null, $statusCode = 401)
+    protected function unauthenticatedResponse( $message = null, $statusCode = 401)
     {
         return response([
             'statusCode' => $statusCode,
             'status' => 'unauthenticated',
             'message' => $message,
-            'data' => $data,
         ])->setStatusCode($statusCode);
     }
 

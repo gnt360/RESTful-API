@@ -2,10 +2,11 @@
 
 namespace App\Exceptions;
 
-use App\Traits\ApiResponses;
 use Throwable;
+use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
@@ -67,6 +68,9 @@ class Handler extends ExceptionHandler
          }
          if ($exception instanceof ValidationException) {
             return $this->validationResponse($exception->errors());
+        }
+        if ($exception instanceof AuthenticationException) {
+            return $this->unauthenticatedResponse($exception->getMessage());
         }
          if ($exception instanceof ModelNotFoundException) {
              $model = strtolower(class_basename($exception->getModel())) ;
