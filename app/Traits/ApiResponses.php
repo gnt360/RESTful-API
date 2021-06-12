@@ -48,14 +48,23 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    protected function formValidationResponse($errors, $data = null, $statusCode = 422)
+    protected function formValidationResponse($errors, $statusCode = 422)
     {
         return response([
             'statusCode' => $statusCode,
-            'status' => 'validation_failed',
-            'message' => "validation failed",
+            'status' => 'validation_error',
+            'message' => 'validation_error',
             'validationErrors' => $errors,
-            'data' => $data,
+        ])->setStatusCode($statusCode);
+    }
+
+    protected function validationResponse($errors, $statusCode = 422)
+    {
+        return response([
+            'statusCode' => $statusCode,
+            'status' => 'validation_error',
+            'message' => 'validation_error',
+            'validationErrors' => $errors,
         ])->setStatusCode($statusCode);
     }
 
@@ -79,20 +88,20 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    /**
-     * a generic method for all error
-     * messages
-     * @param $message
-     * @param int $statusCode
-     * @return Application|ResponseFactory|Response|object
-     */
-    protected function serverErrorResponse($message, $statusCode = 500)
-    {
-        return response([
-            'statusCode' => $statusCode,
-            'status' => 'error',
-            'message' => $message
-        ])->setStatusCode($statusCode);
-    }
+    // /**
+    //  * a generic method for all error
+    //  * messages
+    //  * @param $message
+    //  * @param int $statusCode
+    //  * @return Application|ResponseFactory|Response|object
+    //  */
+    // protected function serverErrorResponse($message, $statusCode = 500)
+    // {
+    //     return response([
+    //         'statusCode' => $statusCode,
+    //         'status' => 'error',
+    //         'message' => $message
+    //     ])->setStatusCode($statusCode);
+    // }
 
 }

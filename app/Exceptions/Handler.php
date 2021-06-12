@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponses;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponses;
     /**
      * A list of the exception types that are not reported.
      *
@@ -61,25 +63,28 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
          if ($exception instanceof ValidationException) {
-             return $this->convertValidationExceptionToResponse($exception, $request);
+             return $this->formValidationResponse($exception->errors());
          }
+         if ($exception instanceof ValidationException) {
+            return $this->validationResponse($exception->errors());
+        }
          if ($exception instanceof ModelNotFoundException) {
              $model = strtolower(class_basename($exception->getModel())) ;
-             return $this->errorResponse("{$model} with the specified id does not exist", 404);
+             return $this->notFoundResponse("{$model} with the specified id does not exist", 404);
          }
          if ($exception instanceof MethodNotAllowedHttpException) {
-             return $this->errorResponse('The specified method for the request is invalid',405);
+             return $this->serverErrorResponse('The specified method for the request is invalid',405);
          }
          if ($exception instanceof NotFoundHttpException) {
-             return $this->errorResponse("The specified URL does not exist", 404);
+             return $this->notFoundResponse("The specified URL does not exist", 404);
          }
          if ($exception instanceof HttpException) {
-             return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
+             return $this->serverErrorResponse($exception->getMessage(), $exception->getStatusCode());
          }
          if ($exception instanceof QueryException) {
              $errorCode = $exception->errorInfo[1];
              if ($errorCode == 1451) {
-                 return $this->errorResponse("Sorry, you cannot delete this resource permanently because it is related to other resources", 409);
+                 return $this->serverErrorResponse("Sorry, you cannot delete this resource permanently because it is related to other resources", 409);
              }
          }
 
@@ -93,7 +98,7 @@ class Handler extends ExceptionHandler
      * @param int $statusCode
      * @return Application|ResponseFactory|\Illuminate\Http\Response|object
      */
-    protected function errorResponse($message, $statusCode = 500)
+    protected function serverErrorResponse($message, $statusCode = 500)
     {
         return response([
             'statusCode' => $statusCode,
