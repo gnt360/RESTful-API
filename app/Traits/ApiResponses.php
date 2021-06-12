@@ -48,12 +48,13 @@ trait ApiResponses
         ])->setStatusCode($statusCode);
     }
 
-    protected function formValidationResponse( $message = null, $data = null, $statusCode = 422)
+    protected function formValidationResponse($errors, $data = null, $statusCode = 422)
     {
         return response([
             'statusCode' => $statusCode,
             'status' => 'validation_failed',
-            'message' => $message,
+            'message' => "validation failed",
+            'validationErrors' => $errors,
             'data' => $data,
         ])->setStatusCode($statusCode);
     }
