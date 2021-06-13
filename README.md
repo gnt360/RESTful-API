@@ -19,3 +19,6 @@ End Points:
 4. Delete the user: api/v1/users/{id}
 
 5. Login the user: api/v1/login
+
+Wrote feature test on all end points.
+Run vendor/bin/phpunit
